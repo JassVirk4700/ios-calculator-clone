@@ -4,7 +4,7 @@ body {
   width: 100vw;
   margin: 0;
   padding: 0;
-  font-family: "Helvetica Neue";
+  font-family: "Helvetica",sans-serif;
   user-select: none;
   background-color: rgb(0, 0, 0);
 }
@@ -91,13 +91,13 @@ body {
     #query h3 {
       color: rgb(195, 195, 195);
       font-size: 30px;
-      margin-right: 45px;
+      margin-right: 20px;
     }
   
     #query-result h1 {
       color: white;
       font-size: 60px;
-      margin-right: 45px;
+      margin-right: 20px;
     }
   }
 

@@ -1,112 +1,142 @@
-// **Initial code of js for backup** 
-let string = "0";
+let string = "0";                 // Used internally for evaluation
+let displayString = "0";         // What user sees
 let display = document.getElementById("display");
 let fade_display = document.getElementById("fade-display");
 let buttons = document.querySelectorAll(".btn");
 const operators = ["+", "-", "x", "÷", "%"];
-let operator = ""; // Variable to store the operator clicked
+let operator = "";
 
-display.innerHTML = string; // Display the initial value of string
+display.innerHTML = displayString;
 
-// fun to remove the last character from the string
+// fun to remove the last character from a string
 function removeCharacter(str) {
-  let newString = str.slice(0, -1);
-  return newString;
+  return str.slice(0, -1);
 }
 
 // main working of the calculator
 Array.from(buttons).forEach((button) => {
   button.addEventListener("click", (e) => {
+    let clickedButton = e.target.textContent;
 
-    let clickedButton = e.target.textContent; // Get the text content of the clicked button
-      
     if (clickedButton == "=") {
-        fade_display.innerHTML = string;
-        string = eval(string);
-        string = string.toString();
-        display.innerHTML = string;
+      fade_display.innerHTML = displayString;
+      string = eval(string).toString();
+      displayString = string;
+      display.innerHTML = displayString;
     }
 
     else if (clickedButton == "AC") {
-        string = "0";
-        display.innerHTML = string;
-        fade_display.innerHTML = "";
+      string = "0";
+      displayString = "0";
+      display.innerHTML = displayString;
+      fade_display.innerHTML = "";
     }
-        
+
     else if (clickedButton == "←") {
-        if (string.length == 1) {
-            if (string == "0") {
-                string = "0";
-                display.innerHTML = string;
-            }
-            else {
-                string = "0";
-                display.innerHTML = string;
-            }
-        }
-        else if (string.length > 1) {
-            new_str = removeCharacter(string);
-            string = new_str;
-            display.innerHTML = string;
-        }
+      if (string.length === 1) {
+        string = displayString = "0";
+      }
+      else {
+        string = removeCharacter(string);
+        displayString = removeCharacter(displayString);
+      }
+      display.innerHTML = displayString;
     }
 
-    // If the user clicks on a operator button
+    // If the user clicks an operator
     else if (operators.includes(clickedButton)) {
-        const lastChar = string.slice(-1); 
-        operator = clickedButton; // Get the operator clicked
+      console.log('clicked operator:', clickedButton);
+      const lastChar_string = string.slice(-1);
+      operator = clickedButton;
 
-        // Convert visual operator to evaluation operator
-        if (operator === "x") operator = "*";
-        if (operator === "÷") operator = "/";
-        if (operator === "%") operator = "/100*";
+      let evalOperator = operator;
+      if (operator === "x" || operator === "*") evalOperator = "*";
+      if (operator === "÷") evalOperator = "/";
+      if (operator === "%") evalOperator = "/100*";
 
-        if (!["+", "-", "*", "/", "%"].includes(lastChar)) {
-            // No operator at the end, just append converted operator
-            string += operator;
-            display.innerHTML = string;
-        } else {
-            // Replace last operator with the new one
-            string = string.slice(0, -1) + operator;
-            display.innerHTML = string;
-        }
-
+      if (!["+", "-", "*", "/", "%"].includes(lastChar_string)) {
+        string += evalOperator;
+        displayString += operator;
+      }
+      else {
+        string = string.slice(0, -1) + evalOperator;
+        displayString = displayString.slice(0, -1) + operator;  
+      }
+      display.innerHTML = displayString;
     }
-        
-    // If the user clicks on a number button
+
+    // If the user clicks a number or decimal
     else {
-        // If user clicks on 0, and the string is already 0, do not add another 0 or operator
-        if (string.length == 1) {
-            if (string == "0") {
-                if (clickedButton == "0") {
-                    string = "0";
-                    display.innerHTML = string;
-                } else if (clickedButton == ".") {
-                    string += ".";
-                    display.innerHTML = string;
-                } else if (clickedButton == "00") {
-                    string = "0";
-                    display.innerHTML = string;
-                } else if (clickedButton == "+" || clickedButton == "-" || clickedButton == "÷" || clickedButton == "x" || clickedButton == "%") {
-                    string = "0";
-                    display.innerHTML = string;
-                }
-                else {
-                    string = clickedButton;
-                    display.innerHTML = string;
-                }
-            }
-            else {
-                string += clickedButton;
-                display.innerHTML = string;
-                }
+      if (displayString.length === 1 && displayString === "0") {
+        if (clickedButton === "0" || clickedButton === "00") {
+          // Stay at 0
         }
-            
-        // If length is not equals to 1, add the number to the string
+        else if (clickedButton === ".") {
+          string += ".";
+          displayString += ".";
+        }
+        else if (operators.includes(clickedButton)) {
+          // Do nothing if operator is clicked first
+        }
         else {
-            string = string + clickedButton;
-            display.innerHTML = string;
+          string = clickedButton;
+          displayString = clickedButton;
         }
+      }
+      else {
+        string += clickedButton;
+        displayString += clickedButton;
+      }
+        
+      display.innerHTML = displayString;
     }
   });
+});
+
+// Added keyborad input 
+document.addEventListener("keydown", (event) => {
+  const key = event.key;
+
+  const isNumber = !isNaN(key) || key === ".";
+  const isOperator = ["+", "-", "*", "/", "x", "÷"].includes(key);
+
+  // Prevent default behavior for common calculator keys
+  const relevantKeys = [
+    "Enter", "Backspace", "Escape", "+", "-", "*", "/", ".", 
+    ...Array(10).map(n => n.toString())
+  ];
+  if (relevantKeys.includes(key)) event.preventDefault();
+
+  if (key === "Enter") {
+    fade_display.innerHTML = displayString;
+    string = eval(string).toString();
+    displayString = string;
+    display.innerHTML = displayString;
+  } 
+  else if (key === "Backspace") {
+    if (string.length === 1) {
+      string = displayString = "0";
+    } else {
+      string = removeCharacter(string);
+      displayString = removeCharacter(displayString);
+    }
+    display.innerHTML = displayString;
+  } 
+  else if (key === "Escape") {
+    string = "0";
+    displayString = "0";
+    display.innerHTML = displayString;
+    fade_display.innerHTML = "";
+  } 
+  else if (isNumber || isOperator) {
+    // Convert keyboard operators to calculator UI text
+    let clickedButton = key;
+    if (key === "*") clickedButton = "x";
+    else if (key === "/") clickedButton = "÷";
+
+    const buttonElement = Array.from(buttons).find((button) => button.textContent === clickedButton);
+    if (buttonElement) {
+      buttonElement.click();
+    }
+  }
 });

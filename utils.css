@@ -1,41 +1,67 @@
-.text-center{
-    text-align: center;
+.text-center {
+  text-align: center;
+}
+/* This a basic button template */
+.basic-button {
+  background-color: #333333;
+  color: white;
+  border: none;
+  padding: 5px;
+  margin: 6px;
+  font-size: 35px;
+  height: 75px;
+  width: 75px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  border-radius: 50%;
+}
+/* It removes the blue highlight occur when cursor press any button */
+.rmv-blue-hg {
+  -webkit-tap-highlight-color: transparent;
 }
 
-.basic-button{
-    background-color: #333333;
-    color: white;
-    border: none;
-    padding: 5px;
-    margin: 6px;
-    font-size: 35px;
-    height: 75px;
-    width: 75px;
-    cursor: pointer;
-    text-align: center; 
-    text-decoration: none; 
-    display: inline-block; 
-    border-radius: 50%;
+.bg-yellow {
+  background-color: #ff9f0a;
 }
 
-.yellow-bg{
-    background-color: #FF9F0A;
+.bg-red {
+  background-color: red;
 }
 
-.grey-bg{
-    background-color: #A5A5A5;
-    color: black;
+.bg-blue {
+  background-color: blue;
 }
 
-.rmv-blue-hg{
-    -webkit-tap-highlight-color: transparent;
+/* This CSS is for color transition while pressing num keys */
+.num-btn-col-txn {
+  background-color: #333333;
+  transition: background 0.1s;
 }
 
-.bg-red{
-    background-color: red;
+.num-btn-col-txn:active {
+  background-color: #575757;
 }
 
-.bdr-green{
-    border-color: green;
-    border-width: 5px;
+/* This CSS is for color transition while pressing Left-Right operator keys */
+.opr1-btn-col-txn {
+  color: black;
+  background-color: #a5a5a5;
+  transition: background 0.1s;
+}
+
+.opr1-btn-col-txn:active {
+  background-color: #f9f9f9;
+}
+
+/* This CSS is for color transition while pressing Top-Bottom operator keys */
+.opr2-btn-col-txn {
+  color: white;
+  background-color: #ff9f0a;
+  transition: background 0.1s;
+}
+
+.opr2-btn-col-txn:active {
+  background-color: #ffc66f;
 }

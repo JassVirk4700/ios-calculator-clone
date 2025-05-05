@@ -7,6 +7,6 @@
     <h3>Main Objectives</h3>
     <p>This project was developed with the aim of putting to the test my knowledge of <strong>HTML</strong>, <strong>CSS</strong> and <strong>JavaScript</strong> web development languages. If interested, the project website can be accessed through the following link:</p><br>
     <div align="center">
-        <a href='https://jassvirk4700.github.io/ios-calculator-clone/' target="_blank"><img src="/assests/ios-calculator-link.png.png" alt="ios-calculator-link" height=50px></a>
+        <a href='https://jassvirk4700.github.io/ios-calculator-clone/' target="_blank"><img src="/assests/ios-calculator-link.png" alt="ios-calculator-link" height=50px></a>
     </div>
 </div>

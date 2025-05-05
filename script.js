@@ -1,20 +1,22 @@
 let string = "0";                 // Used for evaluation
 let displayString = "0";         // Visible to user
 let display = document.getElementById("display");
-let fade_display = document.getElementById("fade-display");
-let buttons = document.querySelectorAll(".btn");
+const fade_display = document.getElementById("fade-display");
+const buttons = document.querySelectorAll(".btn");
 const operators = ["+", "-", "x", "÷", "%"];
 let operator = "";
 
-// Initial display
+// *Initial display*
 display.innerHTML = displayString;
 
-// to remove last character
+// ---Essential Functions--- 
+
+// To remove last character
 function removeCharacter(str) {
   return str.slice(0, -1);
 }
 
-// Prevent multiple decimals in a number group
+// To Prevent multiple decimals in a number group
 function canAddDecimal() {
   const lastOperatorIndex = Math.max(
     ...operators.map(op => displayString.lastIndexOf(op))
@@ -23,7 +25,7 @@ function canAddDecimal() {
   return !currentNumberSegment.includes(".");
 }
 
-// Handle operator conversion for string evaluation
+// To Handle operator conversion for string evaluation
 function getEvalOperator(op) {
   if (op === "x" || op === "*") return "*";
   if (op === "÷") return "/";
@@ -31,16 +33,36 @@ function getEvalOperator(op) {
   return op;
 }
 
-// Main calculator logic
-Array.from(buttons).forEach((button) => {
-  button.addEventListener("click", (e) => {
-    let clickedButton = e.target.textContent;
+// To Check if the character is an operator
+function isOperator(char) {
+    return ['+', '-', '×','*','/','÷','%','/100*','.'].includes(char);
+}
+  
+// Equal symbol handling
+function handleEqual() {
+    const currentText = display.textContent.trim();
+    const lastChar = currentText.slice(-1);
 
-    if (clickedButton === "=") {
+    // Check if last character is an operator
+    if (isOperator(lastChar)) {
+      return; // Do nothing
+    }
+    // Else evaluate the expression
+    else {
       fade_display.innerHTML = displayString;
       string = eval(string).toString();
       displayString = string;
       display.innerHTML = displayString;
+    }
+  }
+// ---End of essential functions---
+
+// ---Main calculator logic---
+Array.from(buttons).forEach((button) => {
+  button.addEventListener("click", (e) => {
+    let clickedButton = e.target.textContent;
+    if (clickedButton === "=") {
+        handleEqual();
     }
 
     else if (clickedButton === "AC") {
@@ -102,7 +124,10 @@ Array.from(buttons).forEach((button) => {
   });
 });
 
-// Keyboard input support
+// ---End of main calculator logic---
+
+// ---Keyboard input support---
+
 document.addEventListener("keydown", (event) => {
   const key = event.key;
   const isNumber = !isNaN(key) || key === ".";
@@ -146,3 +171,22 @@ document.addEventListener("keydown", (event) => {
     }
   }
 });
+
+// ---End of Keyboard input support---
+
+// ---Auto-scrolling to left-end (logic)---
+
+// Observer for auto-scrolling when content updates
+const scroll_div = document.getElementById("query-result");
+const observer = new MutationObserver(() => {
+    scroll_div.scrollLeft = scroll_div.scrollWidth;
+  });
+  
+// Start observing text/content changes
+observer.observe(scroll_div, {
+    childList: true,       // Listen for child text updates
+    subtree: true,         // Observe deeper elements (e.g., h3 inside)
+    characterData: true    // Detect direct text changes
+ });
+  
+// ---End of auto-scrolling logic---

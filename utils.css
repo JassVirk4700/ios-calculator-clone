@@ -30,10 +30,6 @@
   background-color: red;
 }
 
-.bg-blue {
-  background-color: blue;
-}
-
 /* This CSS is for color transition while pressing num keys */
 .num-btn-col-txn {
   background-color: #333333;
